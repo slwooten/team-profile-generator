@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 
-const chooseEmployee = (type) => {
+const chooseEmployee = (type, neededInfo) => {
     return inquirer.prompt([
         {
             name: 'name',
@@ -13,6 +13,10 @@ const chooseEmployee = (type) => {
         {
             name: 'email',
             message: `What is the ${type}'s email address?`,
+        },
+        {
+            name: 'neededInfo',
+            message: `${neededInfo}`
         }
     ])
 };
@@ -30,14 +34,14 @@ const nextEmployee = () => {
 
 const employeeType = (employee) => {
         if (employee.type === 'Engineer') {
-            chooseEmployee(employee.type)
+            chooseEmployee(employee.type, 'What is the Engineer\'s GitHub username?')
                 .then(nextEmployee)
                 .then((answers) => {
                     init(answers.type);
                 });
         }
         if (employee.type === 'Intern') {
-            chooseEmployee(employee.type)
+            chooseEmployee(employee.type, 'What school does the intern attend?')
                 .then(nextEmployee)
                 .then((answers) => {
                     init(answers.type);
@@ -49,10 +53,10 @@ const employeeType = (employee) => {
 
 };
 
-const init = (type) => {
-    chooseEmployee(type)
+const init = (type, neededInfo) => {
+    chooseEmployee(type, neededInfo)
         .then(nextEmployee)
         .then(employeeType);
 };
 
-init('Manager');
+init('Manager', 'What is the Office Number?');
